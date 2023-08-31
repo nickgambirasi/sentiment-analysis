@@ -1,0 +1,5 @@
+# python notebooks
+*.ipynb
+
+# data directory (for now)
+/data
