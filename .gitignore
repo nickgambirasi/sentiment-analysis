@@ -1,5 +1,6 @@
 # python notebooks
 *.ipynb
 
-# data directory (for now)
+# directories (for now, may change)
 /data
+/output
