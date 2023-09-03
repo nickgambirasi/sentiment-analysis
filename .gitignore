@@ -4,3 +4,6 @@
 # directories (for now, may change)
 /data
 /output
+
+# pycache
+/__pycache__

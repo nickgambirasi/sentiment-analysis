@@ -21,9 +21,29 @@ shows the comparisons of the airlines in some graphics.
 """
 
 from flask import Flask, render_template
+import time
+import sys
 
 app = Flask(__name__)
 
-@app.route('/')
+
+@app.route("/")
 def homepage():
-    return render_template('index.html')
+    return render_template("index.html")
+
+
+@app.route("/analysis/loading")
+def redirect():
+    return render_template("loading.html")
+
+
+@app.route("/analysis/results")
+def results():
+    """
+    Performs all data and prediction calculation
+    with res"""
+    return render_template("results.html")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
