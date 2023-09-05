@@ -62,6 +62,7 @@ if __name__ == "__main__":
     # constant that defines the columns of the dataset that
     # will be used for model training
     COLUMNS_TO_KEEP_FOR_TRAINING = ["tweet_id", "airline_sentiment", "airline", "text"]
+    DATA_TO_KEEP_FOR_PRODUCTION = ["tweet_id", "airline", "text"]
 
     # load data from huggingface space
     data = load_dataset(DATASET_HUB_LINK)
@@ -135,7 +136,7 @@ if __name__ == "__main__":
             .select(range(200))
         )
         prod_df = pd.concat([prod_df, airline_subset], join="inner")
-
+    prod_df.drop(columns=["label"])
     prod_df.to_parquet(os.path.join(DATA_DIR, "prod.parquet"))
 
     # training, validation, and test datasets: 70% train, 20% val, 10% test
