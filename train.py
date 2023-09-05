@@ -330,6 +330,8 @@ if __name__ == "__main__":
     print("Saving model...\n")
     try:
         model.save_pretrained(OUTPUT_DIR, from_pt=True)
+        tokenizer.save_pretrained(OUTPUT_DIR, from_pt=True)
+        shutil.copy2(os.path.join(DATA_DIR, "labels.txt"), OUTPUT_DIR)
     except Exception as e:
         sys.exit("There was an error saving the tuned model")
 
