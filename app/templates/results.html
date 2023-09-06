@@ -6,8 +6,9 @@
     </head>
 
     <body>
-        <div>
-            <h2>Prediction Results</h2>
-        </div>
+        {% block content %}
+        <h2>Prediction Results</h2>
+        {{data | safe}}
+        {% endblock %}
     </body>
 </html>

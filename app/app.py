@@ -21,8 +21,8 @@ shows the comparisons of the airlines in some graphics.
 """
 
 from flask import Flask, render_template
-import time
-import sys
+
+from app_utils import collect_and_predict
 
 app = Flask(__name__)
 
@@ -40,9 +40,18 @@ def redirect():
 @app.route("/analysis/results")
 def results():
     """
-    Performs all data and prediction calculation
-    with res"""
-    return render_template("results.html")
+    Prior to loading the comparison page, completes
+    all calculations and predictions associated with
+    the production data.
+
+    Should return a pandas dataframe as the context
+    for the website, so that it can be operated on
+    from the results window.
+    """
+    pred_data = collect_and_predict()
+    return render_template(
+        "results.html", data=pred_data.to_html(classes="table table-stripped")
+    )
 
 
 if __name__ == "__main__":
