@@ -4,6 +4,38 @@
     height: 100;
 }
 
+.image-btn {
+    width: 200px;
+    height: 200px;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.image-btn img {
+    width: 100%;
+    height: 100%;
+}
+
+.select-airline-header {
+    position: absolute;
+    top: 19.5%;
+    left: 50%;
+    margin-left: -6.2%;
+}
+
+.select-airline-header h2 {
+    text-align: center;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    margin-top: -12.5%;
+    left: 50%;
+    margin-left: -20%;
+    width: 50%;
+}
+
 .loader {
     border: 16px solid #f3f3f3;
     border-top: 16px solid blue;

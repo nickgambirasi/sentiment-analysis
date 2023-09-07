@@ -22,7 +22,10 @@ shows the comparisons of the airlines in some graphics.
 
 from flask import Flask, render_template
 
+import os
 from app_utils import collect_and_predict
+
+APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
@@ -35,6 +38,17 @@ def homepage():
 @app.route("/analysis/loading")
 def redirect():
     return render_template("loading.html")
+
+
+@app.route("/analysis/select-airline")
+def select_airline():
+    airlines = []
+    with open(os.path.join(APP_ROOT, os.pardir, "data/airlines.txt")) as f:
+        for line in f.readlines():
+            airlines.append(line.strip().replace(" ", "_"))
+        print(airlines)
+    context = {"airlines": airlines}
+    return render_template("select_airline.html", **context)
 
 
 @app.route("/analysis/results")
