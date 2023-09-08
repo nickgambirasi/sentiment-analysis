@@ -29,42 +29,38 @@ APP_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
+global pred_data
+
 
 @app.route("/")
-def homepage():
-    return render_template("index.html")
-
-
-@app.route("/analysis/loading")
 def redirect():
     return render_template("loading.html")
 
 
-@app.route("/analysis/select-airline")
+@app.route("/select-airline")
 def select_airline():
+    global pred_data
+    pred_data = collect_and_predict()
     airlines = []
     with open(os.path.join(APP_ROOT, os.pardir, "data/airlines.txt")) as f:
         for line in f.readlines():
             airlines.append(line.strip().replace(" ", "_"))
         print(airlines)
     context = {"airlines": airlines}
-    return render_template("select_airline.html", **context)
+    return render_template("homepage.html", **context)
 
 
-@app.route("/analysis/results")
-def results():
+@app.route("/analysis/<airline_name>")
+def results(airline_name: str):
     """
-    Prior to loading the comparison page, completes
-    all calculations and predictions associated with
-    the production data.
-
-    Should return a pandas dataframe as the context
-    for the website, so that it can be operated on
-    from the results window.
+    Queries the production data for the first airline selected
+    from the initial webpage.
     """
-    pred_data = collect_and_predict()
+    # collects all prediction data
+    airline_name = airline_name.replace("_", " ")
+    airline_data = pred_data.query("airline==@airline_name")
     return render_template(
-        "results.html", data=pred_data.to_html(classes="table table-stripped")
+        "results.html", data=airline_data.to_html(classes="table table-stripped")
     )
 
 
