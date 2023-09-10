@@ -1,23 +1,30 @@
+# system libraries
 import os
+import json
 
+# data processing libraries
 import pandas as pd
 
+# data plotting libraries
+import plotly.express as px
+import plotly.graph_objects as go
+import plotly
+
+# huggingface libraries
 import transformers
 import datasets
 import torch
 
+# huggingface objects
 from datasets import Dataset, ClassLabel
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
-    PreTrainedTokenizerFast,
-    PreTrainedTokenizer,
-    PreTrainedModel,
     DataCollatorWithPadding,
 )
-from torch.utils.data import DataLoader
 
-from typing import Tuple
+# pytorch objects
+from torch.utils.data import DataLoader
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 MODEL_DIR = os.path.join(ROOT_DIR, "output")
@@ -25,6 +32,21 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 
 
 def collect_and_predict() -> pd.DataFrame:
+    """
+    Utility function that collects all production data
+    and makes sentiment predictions on each data point
+    using the previously trained model
+
+    Paramters
+    ----------
+    `None`: Works directly on production data that has
+    been predefined in the data processing phase
+
+    Outputs
+    ----------
+     - `prod_df`: a dataframe of the production data,
+        complete with model sentiment predictions
+    """
     transformers.logging.set_verbosity_error()
     datasets.logging.set_verbosity_error()
 
@@ -40,6 +62,8 @@ def collect_and_predict() -> pd.DataFrame:
 
     # read the production data into a pandas dataframe
     prod_df = pd.read_parquet(os.path.join(DATA_DIR, "prod.parquet"))
+    prod_df = prod_df.reset_index()
+    prod_df = prod_df.drop(columns="index")
 
     # instantiate the tokenizer and model
     tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
@@ -55,7 +79,7 @@ def collect_and_predict() -> pd.DataFrame:
     # construct data collator and data loader
     collator = DataCollatorWithPadding(tokenizer=tokenizer)
     data_loader = DataLoader(
-        dataset=tokenized_prod_ds, batch_size=16, collate_fn=collator
+        dataset=tokenized_prod_ds, shuffle=False, batch_size=16, collate_fn=collator
     )
 
     # construct class label
@@ -78,3 +102,44 @@ def collect_and_predict() -> pd.DataFrame:
     prod_df["sentiment"] = pd.Series(predictions)
 
     return prod_df
+
+
+def plot_data(data_df):
+    """
+    Utility function that utilizes plotly.js
+    to render plots of the data for the selected
+    airline, returns an html object that can be
+    rendered on the analysis webpage for the
+    selected airline (i.e. `/analysis/<airline_name>`)
+
+    Parameters
+    ----------
+    - `data_df`: Pandas dataframe that should contain
+        production data for a specific airline
+
+    Outputs
+    ----------
+    - `plot_json`: An JSON object created through
+        plotly that can be rendered in an HTML template
+    """
+
+    # quick assertion to ensure that the dataframe has been
+    # properly loaded, otherwise return a NoneType than can
+    # be checked for
+    if not all(pd.Series(data_df["sentiment"])):
+        return None
+
+    # get counts of the sentiment values and create pie chart
+    # for it
+    airline_sentiment_counts = pd.DataFrame(
+        data_df["sentiment"].value_counts()
+    ).reset_index()
+
+    # create figure from the sentiment counts dataframe
+    fig = px.pie(data_frame=airline_sentiment_counts, values="count", names="sentiment")
+
+    # create figure widget than can be updated each time new data comes in
+    # fig2 = go.FigureWidget(fig)
+
+    # write figure to json
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
