@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Analyze Airlines</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    </head>
+
+    <body>
+        <div class="select-airline-header">
+            <h2>Select Your Airline</h2>
+        </div>
+        <div class="container">
+            {% for airline in airlines %}
+                <a href= "/analysis/{{ airline }}">
+                    <button class="image-btn">
+                        <img src="../static/img/{{ airline }}_Logo.png" alt="{{ airline }}_Logo">
+                    </button>
+                </a>
+            {% endfor %}
+        </div>
+    </body>
+</html>
