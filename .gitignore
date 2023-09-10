@@ -1,7 +1,6 @@
 # python notebooks
 *.ipynb
 
-<<<<<<< HEAD
 # directories (for now, may change)
 /data
 /output
@@ -9,7 +8,6 @@
 # pycache
 __pycache__
 app/__pycache__
-=======
-# data directory (for now)
-/data
->>>>>>> conda-requirements
+
+# vscode directory
+/.vscode
