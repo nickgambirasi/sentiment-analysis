@@ -131,12 +131,23 @@ def plot_data(data_df):
 
     # get counts of the sentiment values and create pie chart
     # for it
-    airline_sentiment_counts = pd.DataFrame(
-        data_df["sentiment"].value_counts()
-    ).reset_index()
+    airline_sentiment_counts = (
+        pd.DataFrame(data_df["sentiment"].value_counts())
+        .reset_index()
+        .sort_values(by=["sentiment"])
+    )
 
     # create figure from the sentiment counts dataframe
-    fig = px.pie(data_frame=airline_sentiment_counts, values="count", names="sentiment")
+    fig = go.Figure(
+        data=[
+            go.Pie(
+                labels=airline_sentiment_counts["sentiment"],
+                values=airline_sentiment_counts["count"],
+                sort=False,
+                marker=dict(colors=["red", "blue", "green"]),
+            )
+        ]
+    )
 
     # create figure widget than can be updated each time new data comes in
     # fig2 = go.FigureWidget(fig)

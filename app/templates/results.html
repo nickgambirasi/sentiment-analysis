@@ -6,8 +6,21 @@
     </head>
 
     <body class='single-airline-analysis-body'>
-        <h2>Results</h2>
+        <h2>Sentiment of Airline {{ airline.replace("_", " ") }}</h2>
         <div id="chart" class="chart"></div>
+        <div class="compare-container">
+            <h3>Compare With Another Airline</h3>
+            {% for unselected_airline in unselected_airlines %}
+            <a href="/analysis/compare/{{ airline }}+{{ unselected_airline }}">
+                <button class="image-btn">
+                    <img src="../static/img/{{ unselected_airline }}_Logo.png" alt="{{ unselected_airline }}_Logo">
+                </button>
+            </a>
+            {% endfor %}
+        </div>
+        <a href="/select-airline" class="new-airline-link">
+            <button>Begin with Another Airline</button>
+        </a>
     </body>
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
