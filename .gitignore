@@ -1,6 +1,10 @@
 # python notebooks
 *.ipynb
 
+# data files
+*.csv
+*.parquet
+
 # directories (for now, may change)
 /data
 /output
