@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Compare {{ airline1_name }} and {{ airline2_name }}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+
+    <body class="two-airline-comparison-body">
+
+        <div class="airline1">
+            <h2>Sentiment Chart For {{ airline1_name.replace("_", " ") }}</h2>
+            <div id="airline1-chart" class="chart"></div>
+        </div>
+
+        <div class="airline2">
+           <h2>Sentiment Chart for {{ airline2_name.replace("_", " ") }}</h2>
+           <div id="airline2-chart" class="chart"></div>
+           <a href="/analysis/{{ airline1_name }}">
+                <button>Compare With Another Airline</button>
+           </a>
+        </div>
+    </body>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var airline1_graphs = {{ airline1_graphJSON | safe }}
+        Plotly.plot('airline1-chart', airline1_graphs, {})
+        var airline2_graphs = {{ airline2_graphJSON | safe }}
+        Plotly.plot('airline2-chart', airline2_graphs, {})
+    </script>
+</html>

@@ -58,12 +58,61 @@
 }
 
 .single-airline-analysis-body h2 {
+    width: 50%;
+    position: absolute;
+    top: 0%;
+    left: -5%;
     text-align: center;
 }
 
 .single-airline-analysis-body div {
+    width: 50%;
+    position: absolute;
+    top: 15%;
+    left: -5%;
     align-items: center;
 }
+
+.new-airline-link {
+    position: absolute;
+    left: 11%;
+    bottom: 35%;
+}
+
+.compare-container {
+    width: 50%;
+    position: absolute;
+    top: 10%;
+    margin-left: 55%;
+}
+
+.airline1 {
+    width: 50%;
+    position: absolute;
+    top: 10%;
+    margin-left: -5%;
+}
+
+.airline1 h2 {
+    text-align: center;
+}
+
+.airline2 {
+    width: 50%;
+    position: absolute;
+    top: 10%;
+    margin-left: 45%;
+}
+
+.airline2 h2 {
+    text-align: center;
+}
+
+.airline2 a {
+    position: absolute;
+    margin-left: 37.5%;
+}
+
 
 @keyframes spin {
     0% {transform: rotate(0deg)}
